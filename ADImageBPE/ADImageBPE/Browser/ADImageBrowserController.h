@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ADImageBrowserController : UIViewController
 
+@property (nonatomic, strong, readonly) UICollectionView *collectionView;
+
 - (instancetype)initWithImages:(NSArray<UIImage *> *)images;
 - (instancetype)initWithImagePaths:(NSArray<NSString *> *)imagePaths;
 - (instancetype)initWithImageURLs:(NSArray<NSURL *> *)imageURLs;

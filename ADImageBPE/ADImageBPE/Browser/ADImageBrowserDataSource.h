@@ -6,13 +6,24 @@
 //  Copyright © 2018 Andy. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+typedef NS_ENUM(NSUInteger, ADImageBrowserDataSourceDataType) {
+    ADImageBrowserDataSourceDataTypeUnknown = 0,
+    ADImageBrowserDataSourceDataTypeImage,
+    ADImageBrowserDataSourceDataTypePath,
+    ADImageBrowserDataSourceDataTypeURL,
+};
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ADImageBrowserDataSource : NSObject
 
-@property (nonatomic, strong, readonly) NSMutableArray *data;
+@property (nonatomic, assign, readonly) NSUInteger dataCount;
+@property (nonatomic, strong, readonly) NSMutableArray<UIImage *> *dataSource;
+
+- (void)loadData:(NSArray *)data type:(ADImageBrowserDataSourceDataType)type;
+- (nullable UIImage *)imageAtIndex:(NSUInteger)index;
 
 @end
 

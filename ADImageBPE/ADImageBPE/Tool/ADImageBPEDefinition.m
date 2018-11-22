@@ -8,6 +8,9 @@
 
 #import "ADImageBPEDefinition.h"
 
+CGFloat const ADNormalNavigationBarHeight = 64.0f;
+CGFloat const ADAbnormalNavigationBarHeight = 88.0f;
+
 @implementation ADImageBPEDefinition
 
 @end

@@ -9,5 +9,8 @@
 #ifndef ADImageBPE_h
 #define ADImageBPE_h
 
+#import "ADImageBrowserController.h"
+#import "ADImagePickerController.h"
+#import "ADImageEditorController.h"
 
 #endif /* ADImageBPE_h */

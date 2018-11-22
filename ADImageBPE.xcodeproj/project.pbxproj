@@ -31,6 +31,11 @@
 		A1F3060721A682EA00439CD2 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A1F305FF21A682EA00439CD2 /* 1.jpg */; };
 		A1F3060A21A6879900439CD2 /* ADImageBrowserDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060921A6879900439CD2 /* ADImageBrowserDataSource.m */; };
 		A1F3060B21A6879900439CD2 /* ADImageBrowserDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060921A6879900439CD2 /* ADImageBrowserDataSource.m */; };
+		A1F3060E21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */; };
+		A1F3060F21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */; };
+		A1F3061221A6A81C00439CD2 /* ADImageViewWrapperScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3061121A6A81C00439CD2 /* ADImageViewWrapperScrollView.m */; };
+		A1F3061321A6A81C00439CD2 /* ADImageViewWrapperScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3061121A6A81C00439CD2 /* ADImageViewWrapperScrollView.m */; };
+		AF7651F5CD631BF0029E0385 /* libPods-ADImageBPE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED86EC44F499A65E51DF2C /* libPods-ADImageBPE.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		66ED86EC44F499A65E51DF2C /* libPods-ADImageBPE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ADImageBPE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1F305BE21A6560D00439CD2 /* ADImageBPE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADImageBPE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1F305C121A6560D00439CD2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A1F305C221A6560D00439CD2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -71,6 +77,12 @@
 		A1F305FF21A682EA00439CD2 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		A1F3060821A6879900439CD2 /* ADImageBrowserDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADImageBrowserDataSource.h; sourceTree = "<group>"; };
 		A1F3060921A6879900439CD2 /* ADImageBrowserDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImageBrowserDataSource.m; sourceTree = "<group>"; };
+		A1F3060C21A68C6600439CD2 /* ADImageBrowserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADImageBrowserCell.h; sourceTree = "<group>"; };
+		A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImageBrowserCell.m; sourceTree = "<group>"; };
+		A1F3061021A6A81C00439CD2 /* ADImageViewWrapperScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADImageViewWrapperScrollView.h; sourceTree = "<group>"; };
+		A1F3061121A6A81C00439CD2 /* ADImageViewWrapperScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImageViewWrapperScrollView.m; sourceTree = "<group>"; };
+		AF4B1F7937BAA664D93C277C /* Pods-ADImageBPE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADImageBPE.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ADImageBPE/Pods-ADImageBPE.debug.xcconfig"; sourceTree = "<group>"; };
+		EDA2DDCCB2B1778C690585C5 /* Pods-ADImageBPE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADImageBPE.release.xcconfig"; path = "Pods/Target Support Files/Pods-ADImageBPE/Pods-ADImageBPE.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF7651F5CD631BF0029E0385 /* libPods-ADImageBPE.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,12 +104,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		60304F1BD54AAC6EC6491067 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				66ED86EC44F499A65E51DF2C /* libPods-ADImageBPE.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A1F305B521A6560C00439CD2 = {
 			isa = PBXGroup;
 			children = (
 				A1F305C021A6560D00439CD2 /* ADImageBPE */,
 				A1F305D921A6561000439CD2 /* ADImageBPETests */,
 				A1F305BF21A6560D00439CD2 /* Products */,
+				B645F24C931BB2FB74B0C300 /* Pods */,
+				60304F1BD54AAC6EC6491067 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,6 +184,8 @@
 			children = (
 				A1F305F721A6577500439CD2 /* ADImageBPEDefinition.h */,
 				A1F305F821A6577500439CD2 /* ADImageBPEDefinition.m */,
+				A1F3061021A6A81C00439CD2 /* ADImageViewWrapperScrollView.h */,
+				A1F3061121A6A81C00439CD2 /* ADImageViewWrapperScrollView.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -172,6 +197,8 @@
 				A1F305EC21A6570400439CD2 /* ADImageBrowserController.m */,
 				A1F3060821A6879900439CD2 /* ADImageBrowserDataSource.h */,
 				A1F3060921A6879900439CD2 /* ADImageBrowserDataSource.m */,
+				A1F3060C21A68C6600439CD2 /* ADImageBrowserCell.h */,
+				A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -196,6 +223,15 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		B645F24C931BB2FB74B0C300 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AF4B1F7937BAA664D93C277C /* Pods-ADImageBPE.debug.xcconfig */,
+				EDA2DDCCB2B1778C690585C5 /* Pods-ADImageBPE.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -203,6 +239,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1F305DF21A6561000439CD2 /* Build configuration list for PBXNativeTarget "ADImageBPE" */;
 			buildPhases = (
+				976E04A631C93AC5175785E0 /* [CP] Check Pods Manifest.lock */,
 				A1F305BA21A6560D00439CD2 /* Sources */,
 				A1F305BB21A6560D00439CD2 /* Frameworks */,
 				A1F305BC21A6560D00439CD2 /* Resources */,
@@ -298,16 +335,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		976E04A631C93AC5175785E0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ADImageBPE-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A1F305BA21A6560D00439CD2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A1F305F521A6572D00439CD2 /* ADImagePickerController.m in Sources */,
+				A1F3061221A6A81C00439CD2 /* ADImageViewWrapperScrollView.m in Sources */,
 				A1F305C621A6560D00439CD2 /* ViewController.m in Sources */,
 				A1F305F921A6577500439CD2 /* ADImageBPEDefinition.m in Sources */,
 				A1F305ED21A6570400439CD2 /* ADImageBrowserController.m in Sources */,
 				A1F3060A21A6879900439CD2 /* ADImageBrowserDataSource.m in Sources */,
+				A1F3060E21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */,
 				A1F305D121A6560F00439CD2 /* main.m in Sources */,
 				A1F305C321A6560D00439CD2 /* AppDelegate.m in Sources */,
 				A1F305F121A6571C00439CD2 /* ADImageEditorController.m in Sources */,
@@ -320,10 +380,12 @@
 			files = (
 				A1F305DB21A6561000439CD2 /* ADImageBPETests.m in Sources */,
 				A1F305EE21A6570400439CD2 /* ADImageBrowserController.m in Sources */,
+				A1F3060F21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */,
 				A1F3060B21A6879900439CD2 /* ADImageBrowserDataSource.m in Sources */,
 				A1F305F621A6572D00439CD2 /* ADImagePickerController.m in Sources */,
 				A1F305FA21A6577500439CD2 /* ADImageBPEDefinition.m in Sources */,
 				A1F305F221A6571C00439CD2 /* ADImageEditorController.m in Sources */,
+				A1F3061321A6A81C00439CD2 /* ADImageViewWrapperScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,11 +525,13 @@
 		};
 		A1F305E021A6561000439CD2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF4B1F7937BAA664D93C277C /* Pods-ADImageBPE.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T58F77STV4;
 				INFOPLIST_FILE = ADImageBPE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,11 +544,13 @@
 		};
 		A1F305E121A6561000439CD2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EDA2DDCCB2B1778C690585C5 /* Pods-ADImageBPE.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = T58F77STV4;
 				INFOPLIST_FILE = ADImageBPE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
