@@ -33,8 +33,6 @@
 		A1F3060B21A6879900439CD2 /* ADImageBrowserDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060921A6879900439CD2 /* ADImageBrowserDataSource.m */; };
 		A1F3060E21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */; };
 		A1F3060F21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */; };
-		A1F3061221A6A81C00439CD2 /* ADImageViewWrapperScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3061121A6A81C00439CD2 /* ADImageViewWrapperScrollView.m */; };
-		A1F3061321A6A81C00439CD2 /* ADImageViewWrapperScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3061121A6A81C00439CD2 /* ADImageViewWrapperScrollView.m */; };
 		AF7651F5CD631BF0029E0385 /* libPods-ADImageBPE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED86EC44F499A65E51DF2C /* libPods-ADImageBPE.a */; };
 /* End PBXBuildFile section */
 
@@ -79,8 +77,6 @@
 		A1F3060921A6879900439CD2 /* ADImageBrowserDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImageBrowserDataSource.m; sourceTree = "<group>"; };
 		A1F3060C21A68C6600439CD2 /* ADImageBrowserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADImageBrowserCell.h; sourceTree = "<group>"; };
 		A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImageBrowserCell.m; sourceTree = "<group>"; };
-		A1F3061021A6A81C00439CD2 /* ADImageViewWrapperScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADImageViewWrapperScrollView.h; sourceTree = "<group>"; };
-		A1F3061121A6A81C00439CD2 /* ADImageViewWrapperScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImageViewWrapperScrollView.m; sourceTree = "<group>"; };
 		AF4B1F7937BAA664D93C277C /* Pods-ADImageBPE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADImageBPE.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ADImageBPE/Pods-ADImageBPE.debug.xcconfig"; sourceTree = "<group>"; };
 		EDA2DDCCB2B1778C690585C5 /* Pods-ADImageBPE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADImageBPE.release.xcconfig"; path = "Pods/Target Support Files/Pods-ADImageBPE/Pods-ADImageBPE.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,8 +180,6 @@
 			children = (
 				A1F305F721A6577500439CD2 /* ADImageBPEDefinition.h */,
 				A1F305F821A6577500439CD2 /* ADImageBPEDefinition.m */,
-				A1F3061021A6A81C00439CD2 /* ADImageViewWrapperScrollView.h */,
-				A1F3061121A6A81C00439CD2 /* ADImageViewWrapperScrollView.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -362,7 +356,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1F305F521A6572D00439CD2 /* ADImagePickerController.m in Sources */,
-				A1F3061221A6A81C00439CD2 /* ADImageViewWrapperScrollView.m in Sources */,
 				A1F305C621A6560D00439CD2 /* ViewController.m in Sources */,
 				A1F305F921A6577500439CD2 /* ADImageBPEDefinition.m in Sources */,
 				A1F305ED21A6570400439CD2 /* ADImageBrowserController.m in Sources */,
@@ -385,7 +378,6 @@
 				A1F305F621A6572D00439CD2 /* ADImagePickerController.m in Sources */,
 				A1F305FA21A6577500439CD2 /* ADImageBPEDefinition.m in Sources */,
 				A1F305F221A6571C00439CD2 /* ADImageEditorController.m in Sources */,
-				A1F3061321A6A81C00439CD2 /* ADImageViewWrapperScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

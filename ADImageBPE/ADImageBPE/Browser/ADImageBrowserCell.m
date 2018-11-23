@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, assign) CGPoint imageViewOriginCenter;
 
 @end
 
@@ -59,13 +60,14 @@
 
 - (void)onPan:(UIPanGestureRecognizer *)pan
 {
-    if (pan.state == UIGestureRecognizerStateChanged) {
+    if (pan.state == UIGestureRecognizerStateBegan) {
+        self.imageViewOriginCenter = self.imageView.center;
+    } else if (pan.state == UIGestureRecognizerStateChanged) {
         CGPoint transPoint = [pan translationInView:self];
-        CGPoint locatPoint = [pan locationInView:self];
         CGFloat scale = 1 - transPoint.y * 2 / [[UIScreen mainScreen] bounds].size.height;
         scale = MAX(0.5, MIN(scale, 1));
         self.imageView.transform = CGAffineTransformMakeScale(scale, scale);
-        self.imageView.center = locatPoint;
+        self.imageView.center = CGPointMake(self.imageViewOriginCenter.x + transPoint.x, self.imageViewOriginCenter.y + transPoint.y);
         if ([self.delegate respondsToSelector:@selector(imageBrowserCell:panChangedWithTranslationPoint:)]) {
             [self.delegate imageBrowserCell:self panChangedWithTranslationPoint:transPoint];
         }
@@ -79,6 +81,10 @@
             [UIView animateWithDuration:ADAnimationDuration animations:^{
                 self.imageView.transform = CGAffineTransformMakeScale(1, 1);
                 self.imageView.frame = self.scrollView.bounds;
+            } completion:^(BOOL finished) {
+                if ([self.delegate respondsToSelector:@selector(imageBrowserCell:panChangedWithTranslationPoint:)]) {
+                    [self.delegate imageBrowserCell:self panChangedWithTranslationPoint:CGPointZero];
+                }
             }];
         }
     }

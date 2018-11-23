@@ -25,10 +25,17 @@
 
 @implementation ADImageBrowserController
 
-- (instancetype)initWithCurrentIndex:(NSUInteger)index
+- (instancetype)init
 {
     if (self = [super init]) {
         self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    }
+    return self;
+}
+
+- (instancetype)initWithCurrentIndex:(NSUInteger)index
+{
+    if (self = [self init]) {
         self.currentIndex = index;
     }
     return self;
@@ -73,13 +80,17 @@
     return self;
 }
 
+- (instancetype)initWithFromFrame:(CGRect)fromFrame
+{
+    return [self initWithFromFrame:fromFrame currentIndex:0];
+}
+
 - (instancetype)initWithFromFrame:(CGRect)fromFrame currentIndex:(NSUInteger)index
 {
-    if (self = [super init]) {
+    if (self = [self init]) {
         self.currentIndex = index;
         self.hasAnimation = !CGRectIsEmpty(fromFrame);
         if (self.hasAnimation) {
-            self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
             self.fromFrame = fromFrame;
         }
     }
@@ -155,14 +166,14 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.dataSource.dataCount;
+    return [self _numberOfImages];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ADImageBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([ADImageBrowserCell class]) forIndexPath:indexPath];
     cell.delegate = self;
-    cell.imageView.image = self.dataSource.dataSource[indexPath.row];
+    cell.imageView.image = [self _imageAtIndex:indexPath.row];
     
     return cell;
 }
@@ -203,7 +214,7 @@
 - (void)_presentAnimation
 {
     self.animationImageView.alpha = 1;
-    self.animationImageView.image = self.dataSource.dataSource[self.currentIndex];
+    self.animationImageView.image = [self _imageAtIndex:self.currentIndex];
     self.animationImageView.frame = self.fromFrame;
     
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
@@ -235,6 +246,31 @@
     } completion:^(BOOL finished) {
         completion();
     }];
+}
+
+- (NSUInteger)_numberOfImages
+{
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(imageBrowserControllerNumberOfImages:)]) {
+            return [self.delegate imageBrowserControllerNumberOfImages:self];
+        }
+        return 0;
+    }
+    return self.dataSource.dataCount;
+}
+
+- (UIImage *)_imageAtIndex:(NSUInteger)index
+{
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(imageBrowserController:imageAtIndex:)]) {
+            return [self.delegate imageBrowserController:self imageAtIndex:index];
+        }
+        return nil;
+    }
+    if (index < self.dataSource.dataSource.count) {
+        return self.dataSource.dataSource[index];
+    }
+    return nil;
 }
 
 #pragma mark - getter and setter

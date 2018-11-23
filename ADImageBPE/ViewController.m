@@ -13,11 +13,12 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
     ViewControllerButtonTagBrowserImage = 100,
     ViewControllerButtonTagBrowserPath,
     ViewControllerButtonTagBrowserURL,
+    ViewControllerButtonTagBrowserDelegate,
     ViewControllerButtonTagPicker,
     ViewControllerButtonTagEditor,
 };
 
-@interface ViewController ()
+@interface ViewController ()<ADImageBrowserControllerDataSource>
 
 @end
 
@@ -27,7 +28,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
 {
     [super viewDidLoad];
     
-    NSArray *titles = @[@"Browser - Image", @"Browser - Path", @"Browser - URL", @"Picker", @"Editor"];
+    NSArray *titles = @[@"Browser - Image", @"Browser - Path", @"Browser - URL", @"Browser - Delegate", @"Picker", @"Editor"];
     for (int i = 0; i < titles.count; i++) {
         UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 120 + i * 64, self.view.bounds.size.width, 44)];
         [btn setTitle:titles[i] forState:UIControlStateNormal];
@@ -55,9 +56,18 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
 
 - (void)tap:(UITapGestureRecognizer *)tap
 {
-    NSArray *images = @[[UIImage imageNamed:@"1.jpg"], [UIImage imageNamed:@"2.jpg"], [UIImage imageNamed:@"3.jpg"], [UIImage imageNamed:@"4.jpg"],];
-    ADImageBrowserController *b = [[ADImageBrowserController alloc] initWithImages:images fromFrame:tap.view.frame currentIndex:tap.view.tag - 1000];
-    [self presentViewController:b animated:NO completion:nil];
+    if (0)
+    {
+        NSArray *images = @[[UIImage imageNamed:@"1.jpg"], [UIImage imageNamed:@"2.jpg"], [UIImage imageNamed:@"3.jpg"], [UIImage imageNamed:@"4.jpg"],];
+        ADImageBrowserController *b = [[ADImageBrowserController alloc] initWithImages:images fromFrame:tap.view.frame currentIndex:tap.view.tag - 1000];
+        [self presentViewController:b animated:NO completion:nil];
+    }
+    else
+    {
+        ADImageBrowserController *b = [[ADImageBrowserController alloc] initWithFromFrame:tap.view.frame currentIndex:tap.view.tag - 1000];
+        b.delegate = self;
+        [self presentViewController:b animated:NO completion:nil];
+    }
 }
 
 - (void)onButtonClicked:(UIButton *)button
@@ -78,6 +88,13 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
         {
             break;
         }
+        case ViewControllerButtonTagBrowserDelegate:
+        {
+            ADImageBrowserController *b = [[ADImageBrowserController alloc] init];
+            b.delegate = self;
+            [self presentViewController:b animated:YES completion:nil];
+            break;
+        }
         case ViewControllerButtonTagPicker:
         {
             break;
@@ -89,6 +106,18 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
         default:
             break;
     }
+}
+
+#pragma mark - ADImageBrowserControllerDataSource
+
+- (NSUInteger)imageBrowserControllerNumberOfImages:(ADImageBrowserController *)controller
+{
+    return 4;
+}
+
+- (UIImage *)imageBrowserController:(ADImageBrowserController *)controller imageAtIndex:(NSUInteger)index
+{
+    return [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg", index + 1]];
 }
 
 @end
