@@ -12,6 +12,8 @@
 @protocol ADImageBrowserCellDelegate <NSObject>
 
 - (void)imageBrowserCellApplyDismiss:(ADImageBrowserCell *)cell;
+- (void)imageBrowserCell:(ADImageBrowserCell *)cell panChangedWithTranslationPoint:(CGPoint)translationPoint;
+- (void)imageBrowserCell:(ADImageBrowserCell *)cell panEndedWithTranslationPoint:(CGPoint)translationPoint;
 
 @end
 

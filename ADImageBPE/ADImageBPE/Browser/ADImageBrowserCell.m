@@ -7,6 +7,7 @@
 //
 
 #import "ADImageBrowserCell.h"
+#import "ADImageBPEDefinition.h"
 
 @interface ADImageBrowserCell ()<UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
@@ -59,11 +60,26 @@
 - (void)onPan:(UIPanGestureRecognizer *)pan
 {
     if (pan.state == UIGestureRecognizerStateChanged) {
-        CGPoint point = [pan translationInView:self];
-        
+        CGPoint transPoint = [pan translationInView:self];
+        CGPoint locatPoint = [pan locationInView:self];
+        CGFloat scale = 1 - transPoint.y * 2 / [[UIScreen mainScreen] bounds].size.height;
+        scale = MAX(0.5, MIN(scale, 1));
+        self.imageView.transform = CGAffineTransformMakeScale(scale, scale);
+        self.imageView.center = locatPoint;
+        if ([self.delegate respondsToSelector:@selector(imageBrowserCell:panChangedWithTranslationPoint:)]) {
+            [self.delegate imageBrowserCell:self panChangedWithTranslationPoint:transPoint];
+        }
     } else if (pan.state == UIGestureRecognizerStateEnded) {
-        if ([self.delegate respondsToSelector:@selector(imageBrowserCellApplyDismiss:)]) {
-            [self.delegate imageBrowserCellApplyDismiss:self];
+        CGPoint transPoint = [pan translationInView:self];
+        if (transPoint.y > 44) {
+            if ([self.delegate respondsToSelector:@selector(imageBrowserCell:panEndedWithTranslationPoint:)]) {
+                [self.delegate imageBrowserCell:self panEndedWithTranslationPoint:transPoint];
+            }
+        } else {
+            [UIView animateWithDuration:ADAnimationDuration animations:^{
+                self.imageView.transform = CGAffineTransformMakeScale(1, 1);
+                self.imageView.frame = self.scrollView.bounds;
+            }];
         }
     }
 }
@@ -76,7 +92,7 @@
     {
         if (self.scrollView.contentSize.height > self.contentView.bounds.size.height) { return NO; }
         CGPoint velocity = [gestureRecognizer velocityInView:self.contentView];
-        return fabs(velocity.y) > fabs(velocity.x);
+        return velocity.y > 0 && (fabs(velocity.y) > fabs(velocity.x));
     }
     return YES;
 }
@@ -107,6 +123,7 @@
         UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDoubleTap)];
         doubleTap.numberOfTapsRequired = 2;
         [_imageView addGestureRecognizer:doubleTap];
+        [tap requireGestureRecognizerToFail:doubleTap];
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPan:)];
         pan.delegate = self;
         [_imageView addGestureRecognizer:pan];

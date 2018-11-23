@@ -10,6 +10,7 @@
 
 CGFloat const ADNormalNavigationBarHeight = 64.0f;
 CGFloat const ADAbnormalNavigationBarHeight = 88.0f;
+NSTimeInterval const ADAnimationDuration = 0.3f;
 
 @implementation ADImageBPEDefinition
 

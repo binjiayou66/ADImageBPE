@@ -39,6 +39,25 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
         
         [self.view addSubview:btn];
     }
+    
+    for (int i = 0; i < 4; i++) {
+        CGFloat width = self.view.bounds.size.width / 4 - 10;
+        UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(5 + i * (width + 5), self.view.bounds.size.height - width - 30, width, width)];
+        iv.contentMode = UIViewContentModeScaleAspectFit;
+        iv.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i + 1]];
+        iv.tag = 1000 + i;
+        iv.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+        [iv addGestureRecognizer:tap];
+        [self.view addSubview:iv];
+    }
+}
+
+- (void)tap:(UITapGestureRecognizer *)tap
+{
+    NSArray *images = @[[UIImage imageNamed:@"1.jpg"], [UIImage imageNamed:@"2.jpg"], [UIImage imageNamed:@"3.jpg"], [UIImage imageNamed:@"4.jpg"],];
+    ADImageBrowserController *b = [[ADImageBrowserController alloc] initWithImages:images fromFrame:tap.view.frame currentIndex:tap.view.tag - 1000];
+    [self presentViewController:b animated:NO completion:nil];
 }
 
 - (void)onButtonClicked:(UIButton *)button

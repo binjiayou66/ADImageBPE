@@ -18,6 +18,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithImagePaths:(NSArray<NSString *> *)imagePaths;
 - (instancetype)initWithImageURLs:(NSArray<NSURL *> *)imageURLs;
 
+- (instancetype)initWithImages:(NSArray<UIImage *> *)images currentIndex:(NSUInteger)index;
+- (instancetype)initWithImagePaths:(NSArray<NSString *> *)imagePaths currentIndex:(NSUInteger)index;
+- (instancetype)initWithImageURLs:(NSArray<NSURL *> *)imageURLs currentIndex:(NSUInteger)index;
+
+- (instancetype)initWithImages:(NSArray<UIImage *> *)images fromFrame:(CGRect)fromFrame;
+- (instancetype)initWithImagePaths:(NSArray<NSString *> *)imagePaths fromFrame:(CGRect)fromFrame;
+- (instancetype)initWithImageURLs:(NSArray<NSURL *> *)imageURLs fromFrame:(CGRect)fromFrame;
+
+- (instancetype)initWithImages:(NSArray<UIImage *> *)images fromFrame:(CGRect)fromFrame currentIndex:(NSUInteger)index;
+- (instancetype)initWithImagePaths:(NSArray<NSString *> *)imagePaths fromFrame:(CGRect)fromFrame currentIndex:(NSUInteger)index;
+- (instancetype)initWithImageURLs:(NSArray<NSURL *> *)imageURLs fromFrame:(CGRect)fromFrame currentIndex:(NSUInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END
