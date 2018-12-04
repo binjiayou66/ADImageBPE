@@ -6,6 +6,11 @@
 //  Copyright © 2018 Andy. All rights reserved.
 //
 
+/**
+ 1. 使用方式分为两种，直接提供图片数据 / 协议代理模式提供图片数据。
+ 2. 两种使用方式都有带动画过渡版本与无动画过渡版本。直接提供图片数据的方式，初始化方法中提供fromFrame则会带过渡动画，否则没有；协议代理模式提供图片数据方式，如果实现optional协议方法，则会带过渡动画，否则没有。
+ */
+
 #import <UIKit/UIKit.h>
 @class ADImageBrowserController;
 
@@ -14,6 +19,11 @@
 - (NSUInteger)imageBrowserControllerNumberOfImages:(ADImageBrowserController *)controller;
 - (UIImage *)imageBrowserController:(ADImageBrowserController *)controller imageAtIndex:(NSUInteger)index;
 
+@optional
+- (NSInteger)imageBrowserControllerCurrentIndex:(ADImageBrowserController *)controller;
+- (CGRect)imageBrowserControllerAnimationFromFrame:(ADImageBrowserController *)controller;
+- (CGRect)imageBrowserControllerAnimationToFrame:(ADImageBrowserController *)controller;
+
 @end
 
 NS_ASSUME_NONNULL_BEGIN
@@ -21,16 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ADImageBrowserController : UIViewController
 
 @property (nonatomic, strong, readonly) UICollectionView *collectionView;
+@property (nonatomic, assign, readonly) NSUInteger currentIndex;
 
-#pragma mark - 代理方式浏览图片，优先级最高
+#pragma mark - 代理方式浏览图片，优先级更高
 
 @property (nonatomic, weak) id<ADImageBrowserControllerDataSource> delegate;
-/// 代理方式初始化方法，有过渡动画，presentViewController时animated参数传NO
-- (instancetype)initWithFromFrame:(CGRect)fromFrame;
-/// 代理方式初始化方法，有过渡动画，presentViewController时animated参数传NO
-- (instancetype)initWithFromFrame:(CGRect)fromFrame currentIndex:(NSUInteger)index;
 
-#pragma mark - 无动画版浏览图片，可指定当前展示图片下标，缺省下标为0
+#pragma mark - 直接提供图片数据方式浏览
 
 /// 图片数组初始化，无过渡动画
 - (instancetype)initWithImages:(NSArray<UIImage *> *)images;
@@ -45,8 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithImagePaths:(NSArray<NSString *> *)imagePaths currentIndex:(NSUInteger)index;
 /// 图片远程url数组初始化，无过渡动画，指定当前展示图片的下标
 - (instancetype)initWithImageURLs:(NSArray<NSURL *> *)imageURLs currentIndex:(NSUInteger)index;
-
-#pragma mark - 有动画版浏览图片，需提供当前展示图片ImageView的frame，可指定当前展示图片下标，缺省下标为0
 
 /// 图片数组初始化，有过渡动画，presentViewController时animated参数传NO
 - (instancetype)initWithImages:(NSArray<UIImage *> *)images fromFrame:(CGRect)fromFrame;

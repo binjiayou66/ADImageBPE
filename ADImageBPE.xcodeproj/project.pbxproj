@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A16A76B221B50E7C003A0D1B /* ADImagePickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A16A76B121B50E7C003A0D1B /* ADImagePickerDataSource.m */; };
 		A1F305C321A6560D00439CD2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F305C221A6560D00439CD2 /* AppDelegate.m */; };
 		A1F305C621A6560D00439CD2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F305C521A6560D00439CD2 /* ViewController.m */; };
 		A1F305CB21A6560F00439CD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1F305CA21A6560F00439CD2 /* Assets.xcassets */; };
@@ -48,6 +49,8 @@
 
 /* Begin PBXFileReference section */
 		66ED86EC44F499A65E51DF2C /* libPods-ADImageBPE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ADImageBPE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A16A76B021B50E7C003A0D1B /* ADImagePickerDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADImagePickerDataSource.h; sourceTree = "<group>"; };
+		A16A76B121B50E7C003A0D1B /* ADImagePickerDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImagePickerDataSource.m; sourceTree = "<group>"; };
 		A1F305BE21A6560D00439CD2 /* ADImageBPE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADImageBPE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1F305C121A6560D00439CD2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A1F305C221A6560D00439CD2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -202,6 +205,8 @@
 			children = (
 				A1F305F321A6572D00439CD2 /* ADImagePickerController.h */,
 				A1F305F421A6572D00439CD2 /* ADImagePickerController.m */,
+				A16A76B021B50E7C003A0D1B /* ADImagePickerDataSource.h */,
+				A16A76B121B50E7C003A0D1B /* ADImagePickerDataSource.m */,
 			);
 			path = Picker;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1F305F521A6572D00439CD2 /* ADImagePickerController.m in Sources */,
+				A16A76B221B50E7C003A0D1B /* ADImagePickerDataSource.m in Sources */,
 				A1F305C621A6560D00439CD2 /* ViewController.m in Sources */,
 				A1F305F921A6577500439CD2 /* ADImageBPEDefinition.m in Sources */,
 				A1F305ED21A6570400439CD2 /* ADImageBrowserController.m in Sources */,

@@ -20,6 +20,9 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
 
 @interface ViewController ()<ADImageBrowserControllerDataSource>
 
+@property (nonatomic, assign) UIView *tappedView;
+@property (nonatomic, weak) ADImageBrowserController *browserController;
+
 @end
 
 @implementation ViewController
@@ -64,8 +67,10 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
     }
     else
     {
-        ADImageBrowserController *b = [[ADImageBrowserController alloc] initWithFromFrame:tap.view.frame currentIndex:tap.view.tag - 1000];
+        self.tappedView = tap.view;
+        ADImageBrowserController *b = [[ADImageBrowserController alloc] init];
         b.delegate = self;
+        self.browserController = b;
         [self presentViewController:b animated:NO completion:nil];
     }
 }
@@ -118,6 +123,21 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
 - (UIImage *)imageBrowserController:(ADImageBrowserController *)controller imageAtIndex:(NSUInteger)index
 {
     return [UIImage imageNamed:[NSString stringWithFormat:@"%ld.jpg", index + 1]];
+}
+
+- (NSInteger)imageBrowserControllerCurrentIndex:(ADImageBrowserController *)controller
+{
+    return self.tappedView.tag - 1000;
+}
+
+- (CGRect)imageBrowserControllerAnimationFromFrame:(ADImageBrowserController *)controller
+{
+    return self.tappedView.frame;
+}
+
+- (CGRect)imageBrowserControllerAnimationToFrame:(ADImageBrowserController *)controller
+{
+    return [[self.view viewWithTag:1000 + self.browserController.currentIndex] frame];
 }
 
 @end

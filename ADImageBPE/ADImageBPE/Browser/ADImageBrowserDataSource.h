@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ADImageBrowserDataSource : NSObject
 
 @property (nonatomic, assign, readonly) NSUInteger dataCount;
-@property (nonatomic, strong, readonly) NSMutableArray<UIImage *> *dataSource;
+@property (nonatomic, strong, readonly) NSMutableArray<UIImage *> *data;
 
 - (void)loadData:(NSArray *)data type:(ADImageBrowserDataSourceDataType)type;
 - (nullable UIImage *)imageAtIndex:(NSUInteger)index;

@@ -10,7 +10,7 @@
 
 @interface ADImageBrowserDataSource ()
 
-@property (nonatomic, strong) NSMutableArray<UIImage *> *dataSource;
+@property (nonatomic, strong) NSMutableArray<UIImage *> *data;
 @property (nonatomic, strong) NSArray *originData;
 
 @end
@@ -23,7 +23,7 @@
     switch (type) {
         case ADImageBrowserDataSourceDataTypeImage:
         {
-            self.dataSource.array = data;
+            self.data.array = data;
             break;
         }
         case ADImageBrowserDataSourceDataTypePath:
@@ -36,7 +36,7 @@
         }
         default:
         {
-            self.dataSource.array = @[];
+            self.data.array = @[];
             break;
         }
     }
@@ -44,20 +44,20 @@
 
 - (nullable UIImage *)imageAtIndex:(NSUInteger)index
 {
-    if (index < self.dataSource.count) {
-        return self.dataSource[index];
+    if (index < self.data.count) {
+        return self.data[index];
     }
     return nil;
 }
 
 #pragma mark - getter and setter
 
-- (NSMutableArray *)dataSource
+- (NSMutableArray *)data
 {
-    if (!_dataSource) {
-        _dataSource = [[NSMutableArray alloc] init];
+    if (!_data) {
+        _data = [[NSMutableArray alloc] init];
     }
-    return _dataSource;
+    return _data;
 }
 
 - (NSUInteger)dataCount

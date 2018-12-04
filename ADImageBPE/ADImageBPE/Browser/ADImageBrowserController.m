@@ -20,6 +20,7 @@
 @property (nonatomic, strong) UIImageView *animationImageView;
 @property (nonatomic, assign) BOOL hasAnimation;
 @property (nonatomic, assign) CGRect fromFrame;
+@property (nonatomic, assign) CGRect toFrame;
 
 @end
 
@@ -89,10 +90,7 @@
 {
     if (self = [self init]) {
         self.currentIndex = index;
-        self.hasAnimation = !CGRectIsEmpty(fromFrame);
-        if (self.hasAnimation) {
-            self.fromFrame = fromFrame;
-        }
+        self.fromFrame = fromFrame;
     }
     return self;
 }
@@ -139,6 +137,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if ([self.delegate respondsToSelector:@selector(imageBrowserControllerAnimationFromFrame:)]) {
+        self.fromFrame = [self.delegate imageBrowserControllerAnimationFromFrame:self];
+    }
+    if ([self.delegate respondsToSelector:@selector(imageBrowserControllerCurrentIndex:)]) {
+        self.currentIndex = [self.delegate imageBrowserControllerCurrentIndex:self];
+    }
+    self.hasAnimation = !CGRectIsEmpty(self.fromFrame);
     self.view.backgroundColor = self.hasAnimation ? [UIColor clearColor] : [UIColor blackColor];
     
     [self.view addSubview:self.collectionView];
@@ -160,6 +166,13 @@
 - (void)dealloc
 {
     NSLog(@"ADImageBrowserController dealloc.");
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    self.currentIndex = floor((scrollView.contentOffset.x - scrollView.bounds.size.width / 2) / scrollView.bounds.size.width)+ 1;
 }
 
 #pragma mark - UICollection View Delegate
@@ -240,9 +253,13 @@
     self.animationImageView.image = [(ADImageBrowserCell *)self.collectionView.visibleCells.firstObject imageView].image;
     self.animationImageView.frame = frame;
     self.collectionView.hidden =  YES;
+    if ([self.delegate respondsToSelector:@selector(imageBrowserControllerAnimationToFrame:)]) {
+        self.toFrame = [self.delegate imageBrowserControllerAnimationToFrame:self];
+    }
+    self.toFrame = CGRectIsEmpty(self.toFrame) ? self.fromFrame : self.toFrame;
     [UIView animateWithDuration:ADAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         self.view.backgroundColor = [UIColor clearColor];
-        self.animationImageView.frame = self.fromFrame;
+        self.animationImageView.frame = self.toFrame;
     } completion:^(BOOL finished) {
         completion();
     }];
@@ -267,10 +284,7 @@
         }
         return nil;
     }
-    if (index < self.dataSource.dataSource.count) {
-        return self.dataSource.dataSource[index];
-    }
-    return nil;
+    return [self.dataSource imageAtIndex:index];
 }
 
 #pragma mark - getter and setter
