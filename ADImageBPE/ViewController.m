@@ -102,6 +102,9 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
         }
         case ViewControllerButtonTagPicker:
         {
+            ADImagePickerController *picker = [[ADImagePickerController alloc] init];
+            picker.maximumCount = 4;
+            [self presentViewController:picker animated:YES completion:nil];
             break;
         }
         case ViewControllerButtonTagEditor:
