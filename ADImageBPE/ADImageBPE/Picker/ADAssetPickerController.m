@@ -11,13 +11,15 @@
 #import "ADAssetPickerCell.h"
 #import "ADImagePickerTabBar.h"
 #import "ADImageBPEDefinition.h"
+#import "ADImagePickerController.h"
+#import "ADAssetPreviewController.h"
 
-@interface ADAssetPickerController ()<ADAssetPickerDataSourceDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ADAssetPickerCellDelegate, ADImagePickerTabBarDelegate>
+@interface ADAssetPickerController ()<ADAssetPickerDataSourceDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ADAssetPickerCellDelegate, ADImagePickerTabBarDelegate, ADAssetPreviewControllerDataSource>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) ADAssetPickerDataSource *dataSource;
-@property (nonatomic, strong) NSMutableArray *pickedIndexArray;
 @property (nonatomic, strong) ADImagePickerTabBar *tabBar;
+@property (nonatomic, strong) NSMutableDictionary *previewDataSource;
 
 @end
 
@@ -57,21 +59,21 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.dataSource.thumbnailData.count;
+    return self.dataSource.thumbnailImages.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ADAssetPickerCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ADImagePickerCell" forIndexPath:indexPath];
-    if (indexPath.row < self.dataSource.thumbnailData.count) {
-        cell.imageView.image = self.dataSource.thumbnailData[indexPath.row];
+    if (indexPath.row < self.dataSource.thumbnailImages.count) {
+        cell.imageView.image = self.dataSource.thumbnailImages[indexPath.row];
     }
     cell.indexPath = indexPath;
     cell.delegate = self;
     
-    NSInteger index = [self.pickedIndexArray indexOfObject:@(indexPath.row)];
-    if (index != NSNotFound) {
-        [cell setButtonAsPickedWithIndex:index + 1];
+    NSInteger pickedIndex = [self.dataSource pickedIndexOfImageAtIndex:indexPath.row];
+    if (pickedIndex != NSNotFound) {
+        [cell setButtonAsPickedWithIndex:pickedIndex + 1];
     } else {
         [cell resetButtonStyle];
     }
@@ -79,32 +81,50 @@
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.dataSource requestImageAtIndex:indexPath.row contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+        if (result) {
+            self.previewDataSource[@(indexPath.row)] = result;
+            if ([self.navigationController.viewControllers.lastObject isKindOfClass:[ADAssetPreviewController class]]) {
+                ADAssetPreviewController *preview = (id)self.navigationController.viewControllers.lastObject;
+                [preview reloadImageAtIndex:indexPath.row];
+            } else {
+                ADAssetPreviewController *preview = [[ADAssetPreviewController alloc] init];
+                preview.delegate = self;
+                preview.currentIndex = indexPath.row;
+                [self.navigationController pushViewController:preview animated:YES];
+            }
+        }
+    }];
+}
+
 #pragma mark - ADAssetPickerCellDelegate
 
 - (void)assetPickerCellDidClickedButton:(ADAssetPickerCell *)cell
 {
     NSInteger index = cell.indexPath.row;
-    if ([self.pickedIndexArray containsObject:@(index)]) {
-        [self.pickedIndexArray removeObject:@(index)];
-        if (self.pickedIndexArray.count <= 0) {
+    if ([self.dataSource hasPickedImageAtIndex:index]) {
+        [self.dataSource unpickImageAtIndex:index];
+        if (self.dataSource.pickedImageCount <= 0) {
             self.tabBar.leftButton.enabled = NO;
             self.tabBar.rightButton.enabled = NO;
             [self.tabBar.rightButton setTitle:@"确定" forState:UIControlStateNormal];
         } else {
-            [self.tabBar.rightButton setTitle:[NSString stringWithFormat:@"确定(%ld)", self.pickedIndexArray.count] forState:UIControlStateNormal];
+            [self.tabBar.rightButton setTitle:[NSString stringWithFormat:@"确定(%ld)", self.dataSource.pickedImageCount] forState:UIControlStateNormal];
         }
     } else {
-        if (self.pickedIndexArray.count >= self.maximumCount) {
+        if (self.dataSource.pickedImageCount >= self.maximumCount) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"您最多能选择%ld张照片", self.maximumCount] message:nil preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *action = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleCancel handler:nil];
             [alert addAction:action];
             [self presentViewController:alert animated:YES completion:nil];
             return;
         }
-        [self.pickedIndexArray addObject:@(index)];
+        [self.dataSource pickImageAtIndex:index];
         self.tabBar.leftButton.enabled = YES;
         self.tabBar.rightButton.enabled = YES;
-        [self.tabBar.rightButton setTitle:[NSString stringWithFormat:@"确定(%ld)", self.pickedIndexArray.count] forState:UIControlStateNormal];
+        [self.tabBar.rightButton setTitle:[NSString stringWithFormat:@"确定(%ld)", self.dataSource.pickedImageCount] forState:UIControlStateNormal];
     }
     [self.collectionView reloadData];
 }
@@ -118,7 +138,63 @@
 
 - (void)tabBarDidClickedRightButton:(ADImagePickerTabBar *)tabBar
 {
-    
+    if ([self.navigationController isKindOfClass:[ADImagePickerController class]]) {
+        ADImagePickerController *imagePicker = (id)self.navigationController;
+        if ([imagePicker.pickDelegate respondsToSelector:@selector(imagePickerController:didFinishPickingImages:)]) {
+            [imagePicker.pickDelegate imagePickerController:imagePicker didFinishPickingImages:self.dataSource.pickedImages];
+            [imagePicker dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
+}
+
+#pragma mark - ADAssetPreviewControllerDataSource
+
+- (NSUInteger)assetBrowserControllerNumberOfImages:(ADAssetPreviewController *)controller
+{
+    return self.dataSource.thumbnailImages.count;
+}
+
+- (UIImage *)assetBrowserController:(ADAssetPreviewController *)controller imageAtIndex:(NSUInteger)index
+{
+    UIImage *image = [self.previewDataSource objectForKey:@(index)];
+    if (image) {
+        return image;
+    }
+    return [UIImage imageNamed:@"ADAssetPickerPlaceholder"];
+}
+
+- (void)assetBrowserControllerDidChangeCurrentIndex:(ADAssetPreviewController *)controller
+{
+    NSInteger currentIndex = controller.currentIndex;
+    NSLog(@" --- %ld -- %@", currentIndex, self.previewDataSource);
+    if (currentIndex - 1 >= 0) {
+        [self.dataSource requestImageAtIndex:currentIndex - 1 contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+            if (result) self.previewDataSource[@(currentIndex - 1)] = result;
+        }];
+    }
+    if (currentIndex - 2 >= 0) {
+        [self.dataSource requestImageAtIndex:currentIndex - 2 contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+            if (result) self.previewDataSource[@(currentIndex - 2)] = result;
+        }];
+    }
+    if (currentIndex + 1 < self.dataSource.thumbnailImages.count) {
+        [self.dataSource requestImageAtIndex:currentIndex + 1 contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+            if (result) self.previewDataSource[@(currentIndex + 1)] = result;
+        }];
+    }
+    if (currentIndex + 2 < self.dataSource.thumbnailImages.count) {
+        [self.dataSource requestImageAtIndex:currentIndex + 2 contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+            if (result) self.previewDataSource[@(currentIndex + 2)] = result;
+        }];
+    }
+    NSLog(@" --- %@", self.previewDataSource);
+    NSArray *retainIndex = @[@(currentIndex - 2), @(currentIndex - 1), @(currentIndex), @(currentIndex + 1), @(currentIndex + 2)];
+    for (NSNumber *item in self.previewDataSource.allKeys) {
+        if (![retainIndex containsObject:item]) {
+            [self.previewDataSource removeObjectForKey:item];
+        }
+    }
+    NSLog(@" --- %@", self.previewDataSource);
 }
 
 #pragma mark - getter and setter
@@ -151,14 +227,6 @@
     return _dataSource;
 }
 
-- (NSMutableArray *)pickedIndexArray
-{
-    if (!_pickedIndexArray) {
-        _pickedIndexArray = [[NSMutableArray alloc] init];
-    }
-    return _pickedIndexArray;
-}
-
 - (ADImagePickerTabBar *)tabBar
 {
     if (!_tabBar) {
@@ -168,6 +236,14 @@
         [_tabBar.rightButton setTitle:@"确定" forState:UIControlStateNormal];
     }
     return _tabBar;
+}
+
+- (NSMutableDictionary *)previewDataSource
+{
+    if (!_previewDataSource) {
+        _previewDataSource = [[NSMutableDictionary alloc] init];
+    }
+    return _previewDataSource;
 }
 
 - (NSString *)title

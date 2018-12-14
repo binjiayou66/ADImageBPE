@@ -11,8 +11,14 @@
 
 @interface ADAssetPickerDataSource ()
 
+/// PHAsset集合
 @property (nonatomic, strong) NSMutableArray<PHAsset *> *data;
-@property (nonatomic, strong) NSMutableArray<UIImage *> *thumbnailData;
+/// 已选图片的Index合集
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *pickedIndexArray;
+/// 缩略图合集
+@property (nonatomic, strong) NSMutableArray<UIImage *> *thumbnailImages;
+/// 已选图片的原图合集
+@property (nonatomic, strong) NSMutableDictionary<NSNumber*, UIImage *> *originImages;
 
 @end
 
@@ -20,19 +26,40 @@
 
 - (void)loadData
 {
-    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-        if (status != PHAuthorizationStatusAuthorized) {
+    PHAuthorizationStatus authStatus = [PHPhotoLibrary authorizationStatus];
+    switch (authStatus) {
+        case PHAuthorizationStatusAuthorized:
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self _initializePhotos];
+            });
+            break;
+        }
+        case PHAuthorizationStatusNotDetermined:
+        {
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                if (status != PHAuthorizationStatusAuthorized) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先允许访问照片" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    [alert show];
+                } else {
+                    [self _initializePhotos];
+                }
+            }];
+            break;
+        }
+        case PHAuthorizationStatusDenied:
+        case PHAuthorizationStatusRestricted:
+        {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请先允许访问照片" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
             [alert show];
-            return;
-        } else {
-            [self _initializePhotos];
+            break;
         }
-    }];
-    
+        default:
+            break;
+    }
 }
 
-- (void)requestImageAtIndex:(NSInteger)index targetSize:(CGSize)targetSize contentMode:(PHImageContentMode)contentMode resultHandler:(void (^)(UIImage *__nullable result, NSDictionary *__nullable info))resultHandler
+- (void)requestImageAtIndex:(NSInteger)index contentMode:(PHImageContentMode)contentMode resultHandler:(void (^)(UIImage *__nullable result, NSDictionary *__nullable info))resultHandler
 {
     if (index >= self.data.count) {
         return;
@@ -40,11 +67,58 @@
     PHAsset *asset = self. data[index];
     PHImageManager *imageManager = [PHImageManager defaultManager];
     PHImageRequestOptions *opt = [[PHImageRequestOptions alloc] init];
-    [imageManager requestImageForAsset:asset targetSize:targetSize contentMode:contentMode options:opt resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+    [imageManager requestImageForAsset:asset targetSize:CGSizeMake(asset.pixelWidth, asset.pixelHeight) contentMode:contentMode options:opt resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
         if (resultHandler) {
             resultHandler(result, info);
         }
     }];
+}
+
+- (NSInteger)pickedImageCount
+{
+    return self.pickedIndexArray.count;
+}
+
+- (BOOL)hasPickedImageAtIndex:(NSInteger)index
+{
+    return [self.pickedIndexArray containsObject:@(index)];
+}
+
+- (NSInteger)pickedIndexOfImageAtIndex:(NSInteger)index
+{
+    return [self.pickedIndexArray indexOfObject:@(index)];
+}
+
+- (void)pickImageAtIndex:(NSInteger)index
+{
+    if (index >= self.data.count) {
+        return;
+    }
+    [self.pickedIndexArray addObject:@(index)];
+    PHAsset *asset = self. data[index];
+    PHImageManager *imageManager = [PHImageManager defaultManager];
+    PHImageRequestOptions *opt = [[PHImageRequestOptions alloc] init];
+    [imageManager requestImageForAsset:asset targetSize:CGSizeMake(asset.pixelWidth, asset.pixelHeight) contentMode:PHImageContentModeAspectFit options:opt resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+        if (result) {
+            [self.originImages setObject:result forKey:@(index)];
+        }
+    }];
+}
+
+- (void)unpickImageAtIndex:(NSInteger)index
+{
+    [self.pickedIndexArray removeObject:@(index)];
+    [self.originImages removeObjectForKey:@(index)];
+}
+
+- (NSArray<UIImage *> *)pickedImages
+{
+    NSMutableArray *rt = [[NSMutableArray alloc] init];
+    for (NSNumber *index in self.pickedIndexArray) {
+        UIImage *originImage = [self.originImages objectForKey:index];
+        if (originImage) { [rt addObject:originImage]; }
+    }
+    return rt;
 }
 
 #pragma mark - private method
@@ -53,7 +127,7 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self.data removeAllObjects];
-        [self.thumbnailData removeAllObjects];
+        [self.thumbnailImages removeAllObjects];
         // 所有智能相册
         CGFloat width = ADImagePickerCollectionViewItemWidth();
         PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
@@ -71,9 +145,9 @@
                     opt.synchronous = YES;
                     [imageManager requestImageForAsset:asset targetSize:CGSizeMake(width, width) contentMode:PHImageContentModeAspectFill options:opt resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
                         if (result) {
-                            [self.thumbnailData addObject:result];
+                            [self.thumbnailImages addObject:result];
                         } else {
-                            [self.thumbnailData addObject:[UIImage imageNamed:@"ADAssetPickerPlaceholder"]];
+                            [self.thumbnailImages addObject:[UIImage imageNamed:@"ADAssetPickerPlaceholder"]];
                         }
                     }];
                 }
@@ -97,12 +171,28 @@
     return _data;
 }
 
-- (NSMutableArray<UIImage *> *)thumbnailData
+- (NSMutableArray *)pickedIndexArray
 {
-    if (!_thumbnailData) {
-        _thumbnailData = [[NSMutableArray alloc] init];
+    if (!_pickedIndexArray) {
+        _pickedIndexArray = [[NSMutableArray alloc] init];
     }
-    return _thumbnailData;
+    return _pickedIndexArray;
+}
+
+- (NSMutableArray<UIImage *> *)thumbnailImages
+{
+    if (!_thumbnailImages) {
+        _thumbnailImages = [[NSMutableArray alloc] init];
+    }
+    return _thumbnailImages;
+}
+
+- (NSMutableDictionary<NSNumber *,UIImage *> *)originImages
+{
+    if (!_originImages) {
+        _originImages = [[NSMutableDictionary alloc] init];
+    }
+    return _originImages;
 }
 
 @end

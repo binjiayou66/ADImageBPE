@@ -18,7 +18,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
     ViewControllerButtonTagEditor,
 };
 
-@interface ViewController ()<ADImageBrowserControllerDataSource>
+@interface ViewController ()<ADImageBrowserControllerDataSource, ADImagePickerControllerDelegate>
 
 @property (nonatomic, assign) UIView *tappedView;
 @property (nonatomic, weak) ADImageBrowserController *browserController;
@@ -103,6 +103,7 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
         case ViewControllerButtonTagPicker:
         {
             ADImagePickerController *picker = [[ADImagePickerController alloc] init];
+            picker.pickDelegate = self;
             picker.maximumCount = 4;
             [self presentViewController:picker animated:YES completion:nil];
             break;
@@ -141,6 +142,13 @@ typedef NS_ENUM(NSUInteger, ViewControllerButtonTag) {
 - (CGRect)imageBrowserControllerAnimationToFrame:(ADImageBrowserController *)controller
 {
     return [[self.view viewWithTag:1000 + self.browserController.currentIndex] frame];
+}
+
+#pragma mark - ADImagePickerControllerDelegate
+
+- (void)imagePickerController:(ADImagePickerController *)picker didFinishPickingImages:(NSArray<UIImage *> *)images
+{
+    NSLog(@"imagePickerController images = %@", images);
 }
 
 @end

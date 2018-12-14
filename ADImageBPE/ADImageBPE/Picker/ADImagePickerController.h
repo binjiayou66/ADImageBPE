@@ -7,11 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ADImagePickerController;
 
 // ADImagePickerController:UINavigationController
 // - ADAlbumPickerController
 // - ADAssetPickerController
-// - ADImagePreviewBrowserController
+// - ADAssetPreviewController
+
+@protocol ADImagePickerControllerDelegate <NSObject>
+
+- (void)imagePickerController:(ADImagePickerController *)picker didFinishPickingImages:(NSArray<UIImage *> *)images;
+
+@end
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) NSInteger maximumCount;
 @property (nonatomic, assign) NSInteger minimumCount;
+@property (nonatomic, assign) id<ADImagePickerControllerDelegate> pickDelegate;
 
 @end
 

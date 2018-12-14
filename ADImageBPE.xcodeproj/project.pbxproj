@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A14510B621C39527008C834D /* ADAssetPickerPlaceholder@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A14510B421C39527008C834D /* ADAssetPickerPlaceholder@3x.png */; };
+		A14510B721C39527008C834D /* ADAssetPickerPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A14510B521C39527008C834D /* ADAssetPickerPlaceholder@2x.png */; };
 		A154DEAA21BE52380019A6BB /* ADAssetPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A154DEA921BE52380019A6BB /* ADAssetPickerCell.m */; };
 		A16A76B221B50E7C003A0D1B /* ADAssetPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A16A76B121B50E7C003A0D1B /* ADAssetPickerDataSource.m */; };
 		A1A8A27121BF653300DA6211 /* ADImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1A8A27021BF653300DA6211 /* ADImagePickerController.m */; };
@@ -37,6 +39,8 @@
 		A1F3060B21A6879900439CD2 /* ADImageBrowserDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060921A6879900439CD2 /* ADImageBrowserDataSource.m */; };
 		A1F3060E21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */; };
 		A1F3060F21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */; };
+		A1F7931B21C1056800FB7E26 /* ADAssetPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F7931A21C1056800FB7E26 /* ADAssetPreviewController.m */; };
+		A1F7931E21C107BE00FB7E26 /* ADAssetPreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F7931D21C107BE00FB7E26 /* ADAssetPreviewCell.m */; };
 		AF7651F5CD631BF0029E0385 /* libPods-ADImageBPE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ED86EC44F499A65E51DF2C /* libPods-ADImageBPE.a */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +56,8 @@
 
 /* Begin PBXFileReference section */
 		66ED86EC44F499A65E51DF2C /* libPods-ADImageBPE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ADImageBPE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A14510B421C39527008C834D /* ADAssetPickerPlaceholder@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ADAssetPickerPlaceholder@3x.png"; sourceTree = "<group>"; };
+		A14510B521C39527008C834D /* ADAssetPickerPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ADAssetPickerPlaceholder@2x.png"; sourceTree = "<group>"; };
 		A154DEA821BE52380019A6BB /* ADAssetPickerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADAssetPickerCell.h; sourceTree = "<group>"; };
 		A154DEA921BE52380019A6BB /* ADAssetPickerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADAssetPickerCell.m; sourceTree = "<group>"; };
 		A16A76B021B50E7C003A0D1B /* ADAssetPickerDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADAssetPickerDataSource.h; sourceTree = "<group>"; };
@@ -89,6 +95,10 @@
 		A1F3060921A6879900439CD2 /* ADImageBrowserDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImageBrowserDataSource.m; sourceTree = "<group>"; };
 		A1F3060C21A68C6600439CD2 /* ADImageBrowserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADImageBrowserCell.h; sourceTree = "<group>"; };
 		A1F3060D21A68C6600439CD2 /* ADImageBrowserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADImageBrowserCell.m; sourceTree = "<group>"; };
+		A1F7931921C1056800FB7E26 /* ADAssetPreviewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADAssetPreviewController.h; sourceTree = "<group>"; };
+		A1F7931A21C1056800FB7E26 /* ADAssetPreviewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADAssetPreviewController.m; sourceTree = "<group>"; };
+		A1F7931C21C107BE00FB7E26 /* ADAssetPreviewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADAssetPreviewCell.h; sourceTree = "<group>"; };
+		A1F7931D21C107BE00FB7E26 /* ADAssetPreviewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADAssetPreviewCell.m; sourceTree = "<group>"; };
 		AF4B1F7937BAA664D93C277C /* Pods-ADImageBPE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADImageBPE.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ADImageBPE/Pods-ADImageBPE.debug.xcconfig"; sourceTree = "<group>"; };
 		EDA2DDCCB2B1778C690585C5 /* Pods-ADImageBPE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADImageBPE.release.xcconfig"; path = "Pods/Target Support Files/Pods-ADImageBPE/Pods-ADImageBPE.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +128,15 @@
 				66ED86EC44F499A65E51DF2C /* libPods-ADImageBPE.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A14510B321C39527008C834D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A14510B421C39527008C834D /* ADAssetPickerPlaceholder@3x.png */,
+				A14510B521C39527008C834D /* ADAssetPickerPlaceholder@2x.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		A1F305B521A6560C00439CD2 = {
@@ -174,6 +193,7 @@
 				A1F305E721A656D700439CD2 /* Editor */,
 				A1F305EA21A656D700439CD2 /* Picker */,
 				A1F305E821A656D700439CD2 /* Tool */,
+				A14510B321C39527008C834D /* Resources */,
 			);
 			path = ADImageBPE;
 			sourceTree = "<group>";
@@ -222,6 +242,10 @@
 				A154DEA921BE52380019A6BB /* ADAssetPickerCell.m */,
 				A1A8A27421BFA25700DA6211 /* ADImagePickerTabBar.h */,
 				A1A8A27521BFA25700DA6211 /* ADImagePickerTabBar.m */,
+				A1F7931921C1056800FB7E26 /* ADAssetPreviewController.h */,
+				A1F7931A21C1056800FB7E26 /* ADAssetPreviewController.m */,
+				A1F7931C21C107BE00FB7E26 /* ADAssetPreviewCell.h */,
+				A1F7931D21C107BE00FB7E26 /* ADAssetPreviewCell.m */,
 			);
 			path = Picker;
 			sourceTree = "<group>";
@@ -328,6 +352,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1F3060021A682EA00439CD2 /* 4.jpg in Resources */,
+				A14510B621C39527008C834D /* ADAssetPickerPlaceholder@3x.png in Resources */,
+				A14510B721C39527008C834D /* ADAssetPickerPlaceholder@2x.png in Resources */,
 				A1F305CE21A6560F00439CD2 /* LaunchScreen.storyboard in Resources */,
 				A1F3060221A682EA00439CD2 /* 2.jpg in Resources */,
 				A1F3060421A682EA00439CD2 /* 3.jpg in Resources */,
@@ -375,6 +401,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1F7931E21C107BE00FB7E26 /* ADAssetPreviewCell.m in Sources */,
 				A154DEAA21BE52380019A6BB /* ADAssetPickerCell.m in Sources */,
 				A1A8A27621BFA25700DA6211 /* ADImagePickerTabBar.m in Sources */,
 				A1F305F521A6572D00439CD2 /* ADAssetPickerController.m in Sources */,
@@ -383,6 +410,7 @@
 				A1F305F921A6577500439CD2 /* ADImageBPEDefinition.m in Sources */,
 				A1F305ED21A6570400439CD2 /* ADImageBrowserController.m in Sources */,
 				A1F3060A21A6879900439CD2 /* ADImageBrowserDataSource.m in Sources */,
+				A1F7931B21C1056800FB7E26 /* ADAssetPreviewController.m in Sources */,
 				A1F3060E21A68C6600439CD2 /* ADImageBrowserCell.m in Sources */,
 				A1A8A27121BF653300DA6211 /* ADImagePickerController.m in Sources */,
 				A1F305D121A6560F00439CD2 /* main.m in Sources */,
