@@ -7,17 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Photos/Photos.h>
 @class ADAssetPreviewController;
 
-@protocol ADAssetPreviewControllerDataSource <NSObject>
-
-- (NSUInteger)assetBrowserControllerNumberOfImages:(ADAssetPreviewController *)controller;
-- (UIImage *)assetBrowserController:(ADAssetPreviewController *)controller imageAtIndex:(NSUInteger)index;
+@protocol ADAssetPreviewControllerDelegate <NSObject>
 
 @optional
-- (void)assetBrowserControllerDidChangeCurrentIndex:(ADAssetPreviewController *)controller;
-- (CGRect)assetBrowserControllerAnimationFromFrame:(ADAssetPreviewController *)controller;
-- (CGRect)assetBrowserControllerAnimationToFrame:(ADAssetPreviewController *)controller;
+- (CGRect)assetPreviewControllerAnimationToFrame:(ADAssetPreviewController *)controller;
 
 @end
 
@@ -25,11 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ADAssetPreviewController : UIViewController
 
-@property (nonatomic, strong, readonly) UICollectionView *collectionView;
-@property (nonatomic, assign) NSUInteger currentIndex;
-@property (nonatomic, weak) id<ADAssetPreviewControllerDataSource> delegate;
+- (instancetype)initWithAssets:(NSArray<PHAsset *> *)assets currentIndex:(NSInteger)currentIndex;
 
-- (void)reloadImageAtIndex:(NSInteger)index;
+@property (nonatomic, strong, readonly) UICollectionView *collectionView;
+@property (nonatomic, assign, readonly) NSInteger currentIndex;
+@property (nonatomic, weak) id<ADAssetPreviewControllerDelegate> delegate;
+
 - (void)setNavigationBarHidden:(BOOL)hidden;
 
 @end

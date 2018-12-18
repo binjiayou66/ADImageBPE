@@ -20,7 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ADAssetPickerDataSource : NSObject
 
+@property (nonatomic, strong, readonly) NSMutableArray<PHAsset *> *data;
 @property (nonatomic, strong, readonly) NSMutableArray<UIImage *> *thumbnailImages;
+@property (nonatomic, strong, readonly) NSMutableArray<NSNumber *> *pickedIndexArray;
 @property (nonatomic, weak) id<ADAssetPickerDataSourceDelegate> delegate;
 
 - (void)loadData;

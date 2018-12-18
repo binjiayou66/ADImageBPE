@@ -14,7 +14,7 @@
 #import "ADImagePickerController.h"
 #import "ADAssetPreviewController.h"
 
-@interface ADAssetPickerController ()<ADAssetPickerDataSourceDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ADAssetPickerCellDelegate, ADImagePickerTabBarDelegate, ADAssetPreviewControllerDataSource>
+@interface ADAssetPickerController ()<ADAssetPickerDataSourceDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ADAssetPickerCellDelegate, ADImagePickerTabBarDelegate, ADAssetPreviewControllerDelegate>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) ADAssetPickerDataSource *dataSource;
@@ -35,10 +35,10 @@
     [self.view addSubview:self.collectionView];
     [self.view addSubview:self.tabBar];
     
-    CGFloat originY = ad_isAbnormalScreen() ? ADAbnormalNavigationBarHeight : ADNormalNavigationBarHeight;
-    self.collectionView.frame = CGRectMake(0, originY, ad_screenWith(), ad_screenHeight() - originY);
     CGFloat tabBarHeight = ad_isAbnormalScreen() ? ADAbnormalTabBarHeight : ADNormalTabBarHeight;
     self.tabBar.frame = CGRectMake(0, ad_screenHeight() - tabBarHeight, ad_screenWith(), tabBarHeight);
+    CGFloat originY = ad_isAbnormalScreen() ? ADAbnormalNavigationBarHeight : ADNormalNavigationBarHeight;
+    self.collectionView.frame = CGRectMake(0, originY, ad_screenWith(), ad_screenHeight() - originY - tabBarHeight);
     
     [self.dataSource loadData];
 }
@@ -53,6 +53,9 @@
 - (void)assetPickerDataSourceLoadDataSuccess:(ADAssetPickerDataSource *)dataSource
 {
     [self.collectionView reloadData];
+    if (self.dataSource.thumbnailImages.count > 0) {
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:self.dataSource.thumbnailImages.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionBottom animated:NO];
+    }
 }
 
 #pragma mark - Collection View Delegate
@@ -83,20 +86,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.dataSource requestImageAtIndex:indexPath.row contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-        if (result) {
-            self.previewDataSource[@(indexPath.row)] = result;
-            if ([self.navigationController.viewControllers.lastObject isKindOfClass:[ADAssetPreviewController class]]) {
-                ADAssetPreviewController *preview = (id)self.navigationController.viewControllers.lastObject;
-                [preview reloadImageAtIndex:indexPath.row];
-            } else {
-                ADAssetPreviewController *preview = [[ADAssetPreviewController alloc] init];
-                preview.delegate = self;
-                preview.currentIndex = indexPath.row;
-                [self.navigationController pushViewController:preview animated:YES];
-            }
-        }
-    }];
+    ADAssetPreviewController *preview = [[ADAssetPreviewController alloc] initWithAssets:self.dataSource.data currentIndex:indexPath.row];
+    preview.delegate = self;
+    [self.navigationController pushViewController:preview animated:YES];
 }
 
 #pragma mark - ADAssetPickerCellDelegate
@@ -133,7 +125,9 @@
 
 - (void)tabBarDidClickedLeftButton:(ADImagePickerTabBar *)tabBar
 {
-    
+    ADAssetPreviewController *preview = [[ADAssetPreviewController alloc] initWithAssets:self.dataSource.data currentIndex:self.dataSource.pickedIndexArray.firstObject.integerValue];
+    preview.delegate = self;
+    [self.navigationController pushViewController:preview animated:YES];
 }
 
 - (void)tabBarDidClickedRightButton:(ADImagePickerTabBar *)tabBar
@@ -147,54 +141,15 @@
     }
 }
 
-#pragma mark - ADAssetPreviewControllerDataSource
+#pragma mark - ADAssetPreviewControllerDelegate
 
-- (NSUInteger)assetBrowserControllerNumberOfImages:(ADAssetPreviewController *)controller
+- (CGRect)assetPreviewControllerAnimationToFrame:(ADAssetPreviewController *)controller
 {
-    return self.dataSource.thumbnailImages.count;
-}
-
-- (UIImage *)assetBrowserController:(ADAssetPreviewController *)controller imageAtIndex:(NSUInteger)index
-{
-    UIImage *image = [self.previewDataSource objectForKey:@(index)];
-    if (image) {
-        return image;
+    NSIndexPath *currentIndexPath = [NSIndexPath indexPathForRow:controller.currentIndex inSection:0];
+    if ([[self.collectionView indexPathsForVisibleItems] containsObject:currentIndexPath]) {
+        return [self.view convertRect:[self.collectionView cellForItemAtIndexPath:currentIndexPath].frame fromView:self.collectionView];
     }
-    return [UIImage imageNamed:@"ADAssetPickerPlaceholder"];
-}
-
-- (void)assetBrowserControllerDidChangeCurrentIndex:(ADAssetPreviewController *)controller
-{
-    NSInteger currentIndex = controller.currentIndex;
-    NSLog(@" --- %ld -- %@", currentIndex, self.previewDataSource);
-    if (currentIndex - 1 >= 0) {
-        [self.dataSource requestImageAtIndex:currentIndex - 1 contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-            if (result) self.previewDataSource[@(currentIndex - 1)] = result;
-        }];
-    }
-    if (currentIndex - 2 >= 0) {
-        [self.dataSource requestImageAtIndex:currentIndex - 2 contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-            if (result) self.previewDataSource[@(currentIndex - 2)] = result;
-        }];
-    }
-    if (currentIndex + 1 < self.dataSource.thumbnailImages.count) {
-        [self.dataSource requestImageAtIndex:currentIndex + 1 contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-            if (result) self.previewDataSource[@(currentIndex + 1)] = result;
-        }];
-    }
-    if (currentIndex + 2 < self.dataSource.thumbnailImages.count) {
-        [self.dataSource requestImageAtIndex:currentIndex + 2 contentMode:PHImageContentModeAspectFit resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-            if (result) self.previewDataSource[@(currentIndex + 2)] = result;
-        }];
-    }
-    NSLog(@" --- %@", self.previewDataSource);
-    NSArray *retainIndex = @[@(currentIndex - 2), @(currentIndex - 1), @(currentIndex), @(currentIndex + 1), @(currentIndex + 2)];
-    for (NSNumber *item in self.previewDataSource.allKeys) {
-        if (![retainIndex containsObject:item]) {
-            [self.previewDataSource removeObjectForKey:item];
-        }
-    }
-    NSLog(@" --- %@", self.previewDataSource);
+    return CGRectZero;
 }
 
 #pragma mark - getter and setter

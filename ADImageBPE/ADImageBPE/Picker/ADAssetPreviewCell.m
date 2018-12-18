@@ -88,7 +88,6 @@
         CGPoint transPoint = [pan translationInView:self];
         if (transPoint.y > 44) {
             if ([self.delegate respondsToSelector:@selector(imageBrowserCell:panEndedWithTranslationPoint:)]) {
-                [self.delegate setNavigationBarHidden:NO];
                 [self.delegate imageBrowserCell:self panEndedWithTranslationPoint:transPoint];
             }
         } else {
